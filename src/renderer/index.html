@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+  <title>QA Estimator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header__brand">
+      <div class="app-header__title">
+        <h1>QA Estimator</h1>
+        <p>Assistente inteligente de estimativa de esforço para testes</p>
+      </div>
+    </div>
+    <div class="app-header__status" id="connection-status">
+      <span class="status-dot status-dot--unknown"></span>
+      <span id="connection-status-text">Conexão não verificada</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" data-tab="config" role="tab">Configuração</button>
+    <button class="tab tab--active" data-tab="estimate" role="tab">Estimar User Story</button>
+    <button class="tab" data-tab="history" role="tab">Histórico</button>
+  </nav>
+
+  <main class="tab-panels">
+
+    <!-- ==================== CONFIGURAÇÃO ==================== -->
+    <section class="tab-panel" data-panel="config">
+      <div class="card">
+        <h2>Conexão com o Azure DevOps</h2>
+        <p class="muted">
+          As credenciais são criptografadas localmente pelo sistema operacional
+          (safeStorage) e nunca saem da sua máquina.
+        </p>
+
+        <form id="config-form" class="form-grid">
+          <label class="field">
+            <span>Organização (URL completa)</span>
+            <input type="text" id="cfg-organization" placeholder="https://dev.azure.com/sua-organizacao/" required />
+          </label>
+
+          <label class="field">
+            <span>Projeto</span>
+            <input type="text" id="cfg-project" placeholder="Meu Projeto" required />
+          </label>
+
+          <label class="field field--full">
+            <span>Personal Access Token (PAT)</span>
+            <input type="password" id="cfg-pat" placeholder="Cole seu PAT aqui" required />
+          </label>
+
+          <div class="field--full actions">
+            <button type="button" id="btn-test-connection" class="btn btn--secondary">Testar conexão</button>
+            <button type="submit" class="btn btn--primary">Salvar credenciais</button>
+            <button type="button" id="btn-clear-credentials" class="btn btn--ghost">Limpar credenciais salvas</button>
+          </div>
+        </form>
+
+        <div id="config-feedback" class="feedback" hidden></div>
+      </div>
+    </section>
+
+    <!-- ==================== ESTIMAR ==================== -->
+    <section class="tab-panel tab-panel--active" data-panel="estimate">
+      <div class="card">
+        <h2>Identificar a User Story</h2>
+        <form id="story-form" class="form-inline">
+          <label class="field">
+            <span>ID da User Story</span>
+            <input type="text" id="story-id" placeholder="ex.: 12345" required />
+          </label>
+          <button type="submit" class="btn btn--primary">Buscar User Story</button>
+        </form>
+        <div id="story-feedback" class="feedback" hidden></div>
+      </div>
+
+      <div class="card" id="story-details-card" hidden>
+        <h2>Detalhes da User Story</h2>
+        <div id="story-details"></div>
+      </div>
+
+      <div class="card" id="analysis-card" hidden>
+        <h2>Análise de complexidade</h2>
+        <div id="analysis-details"></div>
+      </div>
+
+      <div class="card" id="pert-card" hidden>
+        <h2>Estimativa PERT sugerida</h2>
+        <div id="pert-details"></div>
+        <div class="justification-box" id="justification-box"></div>
+        <p class="ai-disclaimer">A IA nunca decide a estimativa final — ela apenas sugere. A decisão é sempre do QA.</p>
+      </div>
+
+      <div class="card" id="decision-card" hidden>
+        <h2>Validação humana</h2>
+        <form id="decision-form" class="form-grid">
+          <div class="field--full decision-choice">
+            <label class="radio">
+              <input type="radio" name="dec-action" value="aceitar" checked />
+              <span>Aceitar sugestão do assistente</span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="dec-action" value="ajustar" />
+              <span>Ajustar valor</span>
+            </label>
+          </div>
+
+          <label class="field" id="field-final-hours">
+            <span>Estimativa final (horas)</span>
+            <input type="number" step="0.1" min="0" id="dec-final-hours" readonly />
+          </label>
+
+          <label class="field field--full" id="field-reason" hidden>
+            <span>Motivo do ajuste (opcional)</span>
+            <textarea id="dec-reason" rows="3" placeholder="Explique por que a estimativa foi ajustada (opcional)"></textarea>
+          </label>
+
+          <div class="field--full actions">
+            <button type="submit" class="btn btn--primary">Registrar no Azure DevOps</button>
+          </div>
+        </form>
+        <div id="decision-feedback" class="feedback" hidden></div>
+      </div>
+    </section>
+
+
+    <!-- ==================== HISTÓRICO ==================== -->
+    <section class="tab-panel" data-panel="history">
+      <div class="card">
+        <h2>Histórico local de estimativas</h2>
+        <p class="muted">Cada ciclo completo fica registrado aqui, preparando terreno para base histórica comparativa e recomendações futuras.</p>
+        <div id="history-table-wrap">
+          <table class="history-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>User Story</th>
+                <th>Complexidade</th>
+                <th>Sugerido (h)</th>
+                <th>Final (h)</th>
+                <th>Decisão</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
