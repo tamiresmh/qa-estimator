@@ -39,8 +39,8 @@ alguns minutos. Nas próximas vezes, abre direto.
 2. Digite o ID da US e clique em **Buscar User Story**.
 3. O app mostra os dados da US, a análise de complexidade (4 fatores) e a estimativa PERT
    sugerida, com a justificativa completa.
-4. Escolha **Aceitar sugestão** ou **Ajustar valor**. Se ajustar, é obrigatório explicar o
-   motivo (isso ajuda a calibrar o processo no futuro).
+4. Escolha **Aceitar sugestão** ou **Ajustar valor**. Se ajustar, informe o valor final e,
+   se quiser, o motivo (opcional, mas ajuda a calibrar o processo no futuro).
 5. Clique em **Registrar no Azure DevOps**. A estimativa vira um comentário na User Story,
    sempre rastreável, mesmo que o projeto não tenha campos customizados configurados.
 

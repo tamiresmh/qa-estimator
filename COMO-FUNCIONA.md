@@ -25,7 +25,7 @@ User Story (Azure DevOps)
 5. Justificativa automática   → texto explicando a classificação e a conta feita
         │
         ▼
-6. Validação humana            → QA aceita ou ajusta (com motivo obrigatório se ajustar)
+6. Validação humana            → QA aceita ou ajusta (motivo do ajuste é opcional)
 ```
 
 Importante sobre o que este motor **é** e **não é**: não é um modelo de machine learning nem
@@ -141,9 +141,9 @@ exata que levou a esse número.
 
 ## 4. Depois da sugestão: decisão humana
 
-O QA pode **aceitar** a sugestão como está, ou **ajustar** o valor final. Se ajustar, o motivo é
-obrigatório (validado em `src/services/validationService.js`) e fica registrado junto com a
-estimativa — tanto no histórico local (`historyStore.js`) quanto no comentário gravado de volta
+O QA pode **aceitar** a sugestão como está, ou **ajustar** o valor final. Se ajustar, o valor final
+é obrigatório e o motivo é opcional (validado em `src/services/validationService.js`); quando
+informado, fica registrado junto com a estimativa — tanto no histórico local (`historyStore.js`) quanto no comentário gravado de volta
 na User Story no Azure DevOps. Essa trilha de ajustes é o que, no futuro, pode alimentar
 calibração do algoritmo (ver seção de evoluções futuras no `README.md`) — hoje esse dado só é
 coletado, não é usado automaticamente para nada.
